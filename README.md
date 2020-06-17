@@ -1,0 +1,55 @@
+# UTCS Cluster Tutorial (for ML)
+
+I'll cover general workflow, but another useful resource is https://www.cs.utexas.edu/~ml/faq/mastodon_readme.html
+
+### SSH
+
+To submit any jobs, you'll need to log into the submit nodes
+Your user is your UTCS username, not your UTEID.
+
+`ssh bzhou@eldar-1.cs.utexas.edu`
+
+SSH requires key authentication on the first go, so you might have to email `help@cs.utexas.edu` to get you going.
+
+### Storage
+
+There are two main places I operate in - `$HOME`, and `/scratch/cluster/bzhou`.
+If you do not have a directory in scratch space, you can try to `mkdir` in there, but otherwise email `help@cs.utexas.edu`
+
+You are allowed a measly 20 gb in your home directory, so save this for important things.
+I put my code in here, as well as experiments logs, and python installations.
+
+Scratch is relatively flexible, I have about 400 gb, and the IT admins can give you more if you email them and cc your advisor.
+I put datasets, model weights, and larger software installations in scratch.
+
+### Python Package Manager
+
+Anaconda, specifically Miniconda is the go-to
+
+Follow the instructions at https://conda.io/projects/conda/en/latest/user-guide/install/linux.html - I have this installed in my home directory.
+One annoying thing is that some python packages are relatively large, i.e. PyTorch being on the order of gbs, and I find myself running out of local storage all the time.
+
+### Submit a job
+
+Condor requires a script that defines the machine requirements necessary. This is mostly annoying so there are some scripts `generate_condor.py` to get around this.
+
+Run `python3 generate_condor.py example_project/params.py`
+then `cd example_project`
+
+and check out the files generated, `*.submit` and `*.sh`.
+
+To submit an actual job, use `condor_submit` on a `.submit` file. Note there is nothing special about the `.submit` extension, that's just what I've named them.
+To get a good grasp of what's going on, just walk through the full traceback of what happens when you run the `generate_condor.py` script.
+
+### Looking at logs
+
+The output streams written to `example_project/logs/`, and split based on STDERR, STDOUT, etc.
+
+## Monitoring jobs
+
+Use `condor_q -nobatch`, I like to have this in `watch -n1.0 condor_q -nobatch` in a tmux pane at all times.
+
+## Killing jobs
+
+Use `condor_rm id` to remove jobs via cluster id, shown in `condor_q -nobatch`.
+A faster way to kill jobs is to kill all jobs, `condor_rm bzhou`.
