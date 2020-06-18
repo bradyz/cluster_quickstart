@@ -9,7 +9,7 @@ Your user is your UTCS username, not your UTEID.
 
 `ssh bzhou@eldar-1.cs.utexas.edu`
 
-SSH requires key authentication on the first go, so you might have to email `help@cs.utexas.edu` to get you going.
+"The university is now requiring SSH key authentication for all SSH connections not originating from CS/CSRES networks, utexas wireless networks, or UT's VPN." Set up your ssh key here: https://www.cs.utexas.edu/ssh-keys. You will need to be on VPN to do this https://wikis.utexas.edu/pages/viewpage.action?spaceKey=networking&title=Connecting+to+the+UT+VPN+Service
 
 ### Storage
 
