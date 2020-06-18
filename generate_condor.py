@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 
-SUBMIT = """Executable = train_{job_name}.sh
+SUBMIT = """Executable = {job_name}.sh
 
 +Group="GRAD"
 +Project="AI_ROBOTICS"
@@ -45,7 +45,7 @@ log_dir.mkdir(exist_ok=True)
 
 
 for i, job_dict in enumerate(product_dict(**package.PARAMS)):
-    job_name = '_'.join('%s=%s' % (k, v) for k, v in sorted(job_dict.items()))
+    job_name = '_'.join('%s-%s' % (k, v) for k, v in sorted(job_dict.items()))
     job = package.get_job(**job_dict)
 
     (params_py.parent / ('%s.submit' % job_name)).write_text(SUBMIT.format(log_dir=log_dir, job_name=job_name))

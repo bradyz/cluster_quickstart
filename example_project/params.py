@@ -3,7 +3,7 @@ HEADER = """#!/bin/zsh
 export SOME_VAR=123
 export PYTHONPATH=$PYTHONPATH:/scratch/cluster/bzhou/some_path
 
-cd $HOME/cluster_quickstart
+cd $HOME/cluster_quickstart/example_code
 
 conda env list
 """
