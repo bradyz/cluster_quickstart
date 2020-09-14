@@ -18,4 +18,4 @@ def get_job(arg1, arg2):
     """
     build your python command here.
     """
-    return HEADER + ('python3 run.py %s %s' % (arg1, arg2))
+    return HEADER + ('python3 run.py %s %s' % (arg1, arg2)), f'exp-name-{arg1}-{arg2}'
