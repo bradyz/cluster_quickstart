@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 
-SUBMIT = """Executable = {job_name}.sh
+SUBMIT = """Executable = {parent}/{job_name}.sh
 
 +Group="GRAD"
 +Project="AI_ROBOTICS"
@@ -39,6 +39,7 @@ def product_dict(**kwargs):
 params_py = Path(sys.argv[1])
 package_path = str(params_py).split('.')[0].replace('/', '.')
 package = importlib.import_module(package_path)
+parent = params_py.parent.resolve()
 
 log_dir = params_py.resolve().parent / 'logs'
 log_dir.mkdir(exist_ok=True)
@@ -48,8 +49,8 @@ for i, job_dict in enumerate(product_dict(**package.PARAMS)):
     job_name = '_'.join('%s-%s' % (k, v) for k, v in sorted(job_dict.items()))
     job = package.get_job(**job_dict)
 
-    (params_py.parent / ('%s.submit' % job_name)).write_text(SUBMIT.format(log_dir=log_dir, job_name=job_name))
-    (params_py.parent / ('%s.sh' % job_name)).write_text(job)
+    (parent / ('%s.submit' % job_name)).write_text(SUBMIT.format(log_dir=log_dir, job_name=job_name, parent=parent))
+    (parent / ('%s.sh' % job_name)).write_text(job)
 
     os.chmod(params_py.parent / ('%s.sh' % job_name), 509)
 
