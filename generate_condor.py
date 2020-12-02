@@ -2,8 +2,13 @@ import os
 
 from pathlib import Path
 
+# Requirements=GTX1080ti
+# Requirements=(TARGET.GPUSlot && Eldar == True)
+# Requirements=(TARGET.GPUSlot && Eldar == True)
+# Requirements=GTX1080ti
 
-SUBMIT = """Executable = {parent}/{job_name}.sh
+
+SUBMIT = """Executable = {script_dir}/{job_name}.sh
 
 +Group="GRAD"
 +Project="AI_ROBOTICS"
@@ -44,14 +49,17 @@ parent = params_py.parent.resolve()
 log_dir = params_py.resolve().parent / 'logs'
 log_dir.mkdir(exist_ok=True)
 
+script_dir = parent / 'condor_scripts'
+script_dir.mkdir(exist_ok=True)
+
 
 for i, job_dict in enumerate(product_dict(**package.PARAMS)):
     job_name = '_'.join('%s-%s' % (k, v) for k, v in sorted(job_dict.items()))
     job = package.get_job(**job_dict)
 
-    (parent / ('%s.submit' % job_name)).write_text(SUBMIT.format(log_dir=log_dir, job_name=job_name, parent=parent))
-    (parent / ('%s.sh' % job_name)).write_text(job)
+    (script_dir / ('%s.submit' % job_name)).write_text(SUBMIT.format(log_dir=log_dir, job_name=job_name, script_dir=script_dir))
+    (script_dir / ('%s.sh' % job_name)).write_text(job)
 
-    os.chmod(params_py.parent / ('%s.sh' % job_name), 509)
+    os.chmod(script_dir / ('%s.sh' % job_name), 509)
 
     print(job_name)
