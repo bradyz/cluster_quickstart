@@ -1,3 +1,6 @@
+import pathlib
+
+
 # change these.
 CLUSTER_QUICKSTART_DIR = '/u/bzhou/cluster_quickstart'
 CARLA_DIR = '/scratch/cluster/bzhou/software/CARLA_0.9.10.1'
@@ -18,7 +21,7 @@ sleep 30
 
 BODY = """
 cd {target_dir}
-python3 
+python3 run.py --world_port $WORLD_PORT --tm_port $WORLD_PORT --n_vehicles {n_vehicles}
 """
 
 FOOTER = """
@@ -33,9 +36,8 @@ PARAMS = {
 
 
 def get_job(n_cars):
+    body = BODY.format(
+            target_dir=pathlib.Path(__file__).parent.parent,
+            n_vehicles=n_vehicles)
 
-    job = list()
-    job.append('export ROUTES=%s' % route_path)
-    job.append('\n$PWD/lbc/scripts/run_agent.sh\n')
-
-    return HEADER + '\n'.join([x for x in job if x]) + FOOTER
+    return HEADER + body + FOOTER
