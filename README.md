@@ -53,3 +53,19 @@ Use `condor_q -nobatch`, I like to have this in `watch -n1.0 condor_q -nobatch` 
 
 Use `condor_rm id` to remove jobs via cluster id, shown in `condor_q -nobatch`.
 A faster way to kill jobs is to kill all jobs, `condor_rm bzhou`.
+
+## CARLA example
+
+**important**: you need to edit `generate_slurm.py` to change your email, job type, etc, as well as `params.py` to change some system path information.
+
+```bash
+python3 generate_slurm.py examples/running_carla/cluster/params.py
+
+cd examples/running_carla/cluster/slurm_scripts
+
+sbatch n_vehicles=10.submit
+```
+
+then you can look at the running jobs using `squeue -u bzhou`.  
+
+When your job is running/done you'll be able to check out the `examples/running_carla/cluster/logs` and see the individual STDERR, STDOUT.
