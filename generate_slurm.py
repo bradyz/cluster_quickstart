@@ -51,7 +51,7 @@ script_dir = parent / 'slurm_scripts'
 script_dir.mkdir(exist_ok=True)
 
 for i, job_dict in enumerate(product_dict(**package.PARAMS)):
-    job_name = '_'.join('%s-%s' % (k, v) for k, v in sorted(job_dict.items()))
+    job_name = '_'.join('%s=%s' % (k, v) for k, v in sorted(job_dict.items()))
     job = package.get_job(**job_dict)
 
     submit = script_dir / ('submit_%s.submit' % job_name)
