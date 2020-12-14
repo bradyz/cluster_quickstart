@@ -50,7 +50,13 @@ def main(n_vehicles, host, world_port, tm_port):
                 vehicles.append(response.actor_id)
 
         # let them run around.
-        for _ in range(ticks):
+        for t in range(100):
+            print('Tick: %d' % t)
+
+            for i, v in enumerate(world.get_actors().filter('*vehicle*')):
+                print('Vehicle %d: id=%d, x=%.2f, y=%.2f' % (
+                    i, v.id, v.get_location().x, v.get_location().y))
+
             world.tick()
     finally:
         settings = world.get_settings()
