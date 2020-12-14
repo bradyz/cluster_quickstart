@@ -22,7 +22,7 @@ SUBMIT = """#!/bin/bash
 #SBATCH --cpus-per-task=8                    # Number of cpus needed per task
 #SBATCH --mem=48G                            # Memory requirements
 
-./train_{name}.sh
+./{name}.sh
 """
 
 
@@ -54,12 +54,12 @@ for i, job_dict in enumerate(product_dict(**package.PARAMS)):
     job_name = '_'.join('%s=%s' % (k, v) for k, v in sorted(job_dict.items()))
     job = package.get_job(**job_dict)
 
-    submit = script_dir / ('submit_%s.submit' % job_name)
-    train = script_dir / ('train_%s.sh' % job_name)
+    submit = script_dir / ('%s.submit' % job_name)
+    train = script_dir / ('%s.sh' % job_name)
 
     print(job_name)
 
     submit.write_text(SUBMIT.format(log_dir=log_dir, name=job_name))
     train.write_text(job)
 
-    os.chmod(script_dir / ('train_%s.sh' % job_name), 509)
+    os.chmod(script_dir / ('%s.sh' % job_name), 509)
