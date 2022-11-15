@@ -1,0 +1,15 @@
+Executable = /u/jozhang/code/OWT-dev/projects/CenterNet2/condor/c1.sh
++Group="GRAD"
++Project="AI_ROBOTICS"
++ProjectDescription="Training model"
++GPUJob = true
+requirements = (TARGET.GPUSlot && Nandor == True)
+request_GPUs = 8
+Rank=memory
+Universe=vanilla
+Getenv=True
+Notification=Complete
+Log=/scratch/cluster/jozhang/logs/condor/m2f/$(ClusterId).log
+Output=/scratch/cluster/jozhang/logs/condor/m2f/$(ClusterId).out
+Error=/scratch/cluster/jozhang/logs/condor/m2f/$(ClusterId).err
+Queue 1
